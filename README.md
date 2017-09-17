@@ -40,6 +40,8 @@ $ source ./zsh-vimode-visual/zsh-vimode-visual.zsh
 
 `zsh-vimode-visual` is implemented with ***vivis*** that emulates Vim visual mode and ***vivli*** mode.
 
+Set `VIMODE_VISUAL_HIGHLIGHT` in .zshrc to customize highlight style. For example: `VIMODE_VISUAL_HIGHLIGHT='fg=black,bg=yellow'`
+
 ```zsh
 bindkey -M vicmd 'V'  vi-vlines-mode
 bindkey -M vicmd 'v'  vi-visual-mode

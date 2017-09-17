@@ -93,16 +93,16 @@ vi-visual-highlight()
         (( CURSOR_HL = CURSOR + 1 ))
         __regstart=$MARK
         __regend=$CURSOR_HL
-        region_highlight=("${MARK} ${CURSOR_HL} standout")
+        region_highlight=("${MARK} ${CURSOR_HL} ${VIMODE_VISUAL_HIGHLIGHT:-standout}")
     elif [[ $MARK -gt $CURSOR ]];then
         (( MARK_HL = MARK + 1 ))
         __regstart=$CURSOR
         __regend=$MARK_HL
-        region_highlight=("${CURSOR} ${MARK_HL} standout")
+        region_highlight=("${CURSOR} ${MARK_HL} ${VIMODE_VISUAL_HIGHLIGHT:-standout}")
     elif [[ $MARK -eq $CURSOR ]];then
         __regstart=$CURSOR
         __regend=$MARK
-        region_highlight=("${CURSOR} ${MARK} standout")
+        region_highlight=("${CURSOR} ${MARK} ${VIMODE_VISUAL_HIGHLIGHT:-standout}")
     fi
 }
 zle -N vi-visual-highlight
@@ -578,17 +578,17 @@ vi-vlines-highlight()
     if [[ $__start1 == $__start2 ]] && [[ $__end1 == $__end2 ]]; then
         __regstart=$__start1
         __regend=$__end1
-        region_highlight=("${__regstart} ${__regend} standout")
+        region_highlight=("${__regstart} ${__regend} ${VIMODE_VISUAL_HIGHLIGHT:-standout}")
         CURSOR=$__savepos
     elif [[ $__start1 -lt $__start2 ]] && [[ $__end1 -lt $__end2 ]]; then
         __regstart=$__start1
         __regend=$__end2
-        region_highlight=("${__regstart} ${__regend} standout")
+        region_highlight=("${__regstart} ${__regend} ${VIMODE_VISUAL_HIGHLIGHT:-standout}")
         CURSOR=$__savepos
     elif [[ $__start1 -gt $__start2 ]] && [[ $__end1 -gt $__end2 ]]; then
         __regstart=$__start2
         __regend=$__end1
-        region_highlight=("${__regstart} ${__regend} standout")
+        region_highlight=("${__regstart} ${__regend} ${VIMODE_VISUAL_HIGHLIGHT:-standout}")
         CURSOR=$__savepos
     fi
 }
