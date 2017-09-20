@@ -4,16 +4,24 @@ bindkey -N vivis
 
 get-x-clipboard()
 {
-    local clippaste clipboard
-    if (( $+commands[pbpaste] )); then
-        clippaste="pbpaste"
-    elif (( $+commands[xsel] )); then
-        clippaste="xsel --clipboard --output"
+    local clipboard
+    if type 'clippaste' 2>/dev/null | grep -q 'function'
+    then
+        clipboard = "$(clippaste)"
     else
-        return 1
+        local clippaste
+        if (( $+commands[xclip] )); then
+            clippaste="xclip -selection clipboard -out"
+        elif (( $+commands[pbpaste] )); then
+            clippaste="pbpaste"
+        elif (( $+commands[xsel] )); then
+            clippaste="xsel --clipboard --output"
+        else
+            return 1
+        fi
+        clipboard="$( ${=clippaste} )"
     fi
 
-    clipboard="$( ${=clippaste} )"
     if [[ -n $clipboard && $clipboard != $CUTBUFFER ]]; then
         killring=("$CUTBUFFER" "${(@)killring[1,-2]}")
         CUTBUFFER="$clipboard"
@@ -22,16 +30,22 @@ get-x-clipboard()
 
 set-x-clipboard()
 {
-    local clipcopy clipboard
-    if (( $+commands[pbcopy] )); then
-        clipcopy="pbcopy"
-    elif (( $+commands[xsel] )); then
-        clipcopy="xsel --clipboard --input"
+    if type 'clipcopy' 2>/dev/null | grep -q 'function'
+    then
+        printf -- "$@" | clipcopy
     else
-        return 1
+        local clipcopy
+        if (( $+commands[xclip] )); then
+            clipcopy="xclip -selection clipboard -in"
+        elif (( $+commands[pbcopy] )); then
+            clipcopy="pbcopy"
+        elif (( $+commands[xsel] )); then
+            clipcopy="xsel --clipboard --input"
+        else
+            return 1
+        fi
+        printf -- "$@" | ${=clipcopy}
     fi
-
-    printf -- "$@" | ${=clipcopy}
 }
 
 vi-set-buffer()
