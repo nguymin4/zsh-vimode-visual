@@ -5,7 +5,9 @@ bindkey -N vivis
 get-x-clipboard()
 {
     local clippaste clipboard
-    if (( $+commands[pbpaste] )); then
+    if (( $+commands[xclip] )); then
+        clippaste="xclip -selection clipboard -out"
+    elif (( $+commands[pbpaste] )); then
         clippaste="pbpaste"
     elif (( $+commands[xsel] )); then
         clippaste="xsel --clipboard --output"
@@ -23,7 +25,9 @@ get-x-clipboard()
 set-x-clipboard()
 {
     local clipcopy clipboard
-    if (( $+commands[pbcopy] )); then
+    if (( $+commands[xclip] )); then
+        clipcopy="xclip -selection clipboard -in"
+    elif (( $+commands[pbcopy] )); then
         clipcopy="pbcopy"
     elif (( $+commands[xsel] )); then
         clipcopy="xsel --clipboard --input"
